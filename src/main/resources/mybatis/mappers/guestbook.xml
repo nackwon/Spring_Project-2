@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="guestbook">
+
+	<resultMap type="kr.co.jimmy.VO.GuestVO" id="resultMapList">
+		<result column="no" property="no" />
+		<result column="name" property="name" />
+		<result column="password" property="password"/>
+		<result column="content" property="content" />
+		<result column="reg_date" property="reg_date" />
+	</resultMap>
+
+	<!-- guest book write sql -->
+	<insert id="guestbookWrite" parameterType="GuestVo">
+			<![CDATA[
+				INSERT INTO guest_tbl 
+				VALUES (seq_guest_no.nextval,
+					#{name},
+					#{password},
+					#{content},
+					sysdate
+				)
+			]]>
+	</insert>
+	<select id="guestbookList" resultMap="resultMapList">
+		<![CDATA[
+			SELECT no,
+				   name,
+				   content,
+				   reg_date
+			FROM guest_tbl
+			ORDER BY no DESC
+		]]>
+	</select>
+	<delete id="guestbookDelete" parameterType="map">
+		<![CDATA[
+			DELETE FROM guest_tbl
+			WHERE no LIKE #{no}
+			AND password LIKE #{password}
+		]]>
+	</delete>
+</mapper>
